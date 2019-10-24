@@ -131,6 +131,10 @@ const App: React.FC = () => {
           cols={cols} setCols={setCols}
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
           viewRowCount={GRID_VIEW_ROWS}
+          onCellDataChanged={(row, cell, data) => {
+            const q = row.col1; // typed row
+            console.log("data changed on row:" + JSON.stringify(row) + " cell:" + cell + " data:" + data);
+          }}
         />
       </Grid>
     </Grid>
