@@ -14,11 +14,9 @@ this project associate react-wseditor as git submodule in order to allow debug d
 create-react-app test01-dev --typescript
 cd test01-dev
 yarn add @material-ui/core @material-ui/icons react-icons @types/react-icons
-//ts-loader 
 
 cd src
 git submodule add https://github.com/devel0/react-wseditor
-//
 
 cd ..
 
