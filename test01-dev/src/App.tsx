@@ -127,8 +127,7 @@ const App: React.FC = () => {
           rows={rows} setRows={setRows}
           cols={cols} setCols={setCols}
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
-          viewRowCount={GRID_VIEW_ROWS}
-          outlineCell={false}
+          viewRowCount={GRID_VIEW_ROWS}          
         />
       </Grid>
     </Grid>
