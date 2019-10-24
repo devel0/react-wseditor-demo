@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import React from "react";
+import React, { useState, useEffect, useRef } from 'react';
+import logo from './logo.svg';
+import './App.css';
 import { Grid, TextField, Button, Typography, FormControlLabel, Checkbox, createStyles, Theme, makeStyles } from '@material-ui/core';
-
 import {
   WSEditor,
   WSEditorColumn, WSEditorCellEditorText, WSEditorCellEditorProps,
@@ -15,7 +15,7 @@ interface MyData {
   col4: boolean
 }
 
-export default function App() {
+const App: React.FC = () => {
   const [ROWS_COUNT, SET_GRID_SIZE] = useState(12);
   const [GRID_VIEW_ROWS, SET_GRID_VIEW_ROWS] = useState(6);
   const [SELECT_MODE_ROWS, SET_SELECT_MODE_ROWS] = useState(false);
@@ -47,7 +47,10 @@ export default function App() {
       {
         header: "column 4 (boolean)",
         field: "col4",
-        editor: (props, editor, viewCell) => new WSEditorCellEditorBoolean(props, editor, viewCell),
+        editor: (props, editor, viewCell) => new WSEditorCellEditorBoolean(props, editor, viewCell, {
+          label: <Typography style={{ marginRight: "1em" }}>lbl for row {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx}</Typography>,
+          labelPlacement: "start"
+        }),
       },
     ];
     setCols(q2);
@@ -127,9 +130,14 @@ export default function App() {
           cols={cols} setCols={setCols}
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
           viewRowCount={GRID_VIEW_ROWS}
-          outlineCell={false}
+          onCellDataChanged={(row, cell, data) => {
+            const q = row.col1; // typed row
+            console.log("data changed on row:" + JSON.stringify(row) + " cell:" + cell + " data:" + data);
+          }}
         />
       </Grid>
     </Grid>
   </>
 }
+
+export default App;
