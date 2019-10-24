@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import React from "react";
-import { Grid, TextField, Button, Typography, makeStyles, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Grid, TextField, Button, Typography, FormControlLabel, Checkbox, createStyles, Theme, makeStyles } from '@material-ui/core';
+
 import {
-  WSEditor, WSEditorColumn, WSEditorCellEditorProps, WSEditorViewCellCoord,
-  WSEditorCellEditorText, WSEditorCellEditorNumber, WSEditorCellEditorBoolean, WSEditorSelectMode
-} from 'react-wseditor';
+  WSEditor,
+  WSEditorColumn, WSEditorCellEditorText, WSEditorCellEditorProps,
+  WSEditorViewCellCoord, WSEditorCellEditorNumber, WSEditorCellEditorBoolean, WSEditorSelectMode
+} from "react-wseditor";
 
 interface MyData {
   col1: string,
@@ -13,7 +15,7 @@ interface MyData {
   col4: boolean
 }
 
-export default function ExampleComponent() {
+export default function App() {
   const [ROWS_COUNT, SET_GRID_SIZE] = useState(12);
   const [GRID_VIEW_ROWS, SET_GRID_VIEW_ROWS] = useState(6);
   const [SELECT_MODE_ROWS, SET_SELECT_MODE_ROWS] = useState(false);
@@ -22,7 +24,7 @@ export default function ExampleComponent() {
 
   const q1: MyData[] = [];
 
-  React.useEffect(() => {
+  useEffect(() => {
     for (let i = 0; i < ROWS_COUNT; ++i) {
       q1.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: 'x' + i, col3: i, col4: true });
     }
@@ -35,20 +37,17 @@ export default function ExampleComponent() {
       {
         header: "column 2 (text)",
         field: "col2",
-        editor: (props: WSEditorCellEditorProps<MyData>, editor: WSEditor<MyData>, viewCell: WSEditorViewCellCoord<MyData>) =>
-          new WSEditorCellEditorText(props, editor, viewCell),
+        editor: (props, editor, viewCell) => new WSEditorCellEditorText(props, editor, viewCell),
       },
       {
         header: "column 3 (number)",
         field: "col3",
-        editor: (props: WSEditorCellEditorProps<MyData>, editor: WSEditor<MyData>, viewCell: WSEditorViewCellCoord<MyData>) =>
-          new WSEditorCellEditorNumber(props, editor, viewCell),
+        editor: (props, editor, viewCell) => new WSEditorCellEditorNumber(props, editor, viewCell),
       },
       {
         header: "column 4 (boolean)",
         field: "col4",
-        editor: (props: WSEditorCellEditorProps<MyData>, editor: WSEditor<MyData>, viewCell: WSEditorViewCellCoord<MyData>) =>
-          new WSEditorCellEditorBoolean(props, editor, viewCell),
+        editor: (props, editor, viewCell) => new WSEditorCellEditorBoolean(props, editor, viewCell),
       },
     ];
     setCols(q2);
@@ -64,7 +63,7 @@ export default function ExampleComponent() {
   });
 
   const classes = useStyles({});
-  const editorRef = React.useRef<WSEditor<MyData>>(null);
+  const editorRef = useRef<WSEditor<MyData>>(null);
 
   return <>
     <Grid container={true} direction="column">
@@ -118,7 +117,6 @@ export default function ExampleComponent() {
               const editor = editorRef.current;
               editor.deleteRows(editor.selectedRows());
             }
-            //const q = rows.splice(
           }}>delete rows</Button>
         </Grid>
       </Grid>
