@@ -48,7 +48,10 @@ const App: React.FC = () => {
       {
         header: "column 4 (boolean)",
         field: "col4",
-        editor: (props, editor, viewCell) => new WSEditorCellEditorBoolean(props, editor, viewCell),
+        editor: (props, editor, viewCell) => new WSEditorCellEditorBoolean(props, editor, viewCell, {
+          label: <Typography style={{ marginRight: "1em" }}>lbl for row {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx}</Typography>,
+          labelPlacement: "start"
+        }),
       },
     ];
     setCols(q2);
@@ -127,7 +130,7 @@ const App: React.FC = () => {
           rows={rows} setRows={setRows}
           cols={cols} setCols={setCols}
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
-          viewRowCount={GRID_VIEW_ROWS}          
+          viewRowCount={GRID_VIEW_ROWS}
         />
       </Grid>
     </Grid>
