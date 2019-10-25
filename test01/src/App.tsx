@@ -14,6 +14,18 @@ interface MyData {
   col4: boolean
 }
 
+function useDebounce(value: any, ms: number) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), ms);
+
+    return () => clearTimeout(handler);
+  }, [value]);
+
+  return debouncedValue;
+}
+
 const App: React.FC = () => {
   const [ROWS_COUNT, SET_GRID_SIZE] = useState(1200);
   const [GRID_VIEW_ROWS, SET_GRID_VIEW_ROWS] = useState(6);

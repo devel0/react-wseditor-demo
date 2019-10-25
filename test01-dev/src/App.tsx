@@ -19,7 +19,7 @@ interface MyData {
 }
 
 const App: React.FC = () => {
-  const [ROWS_COUNT, SET_GRID_SIZE] = useState(1200000);
+  const [ROWS_COUNT, SET_GRID_SIZE] = useState(1200);
   const [GRID_VIEW_ROWS, SET_GRID_VIEW_ROWS] = useState(6);
   const [SELECT_MODE_ROWS, SET_SELECT_MODE_ROWS] = useState(false);
   const [FILTER, SET_FILTER] = useState("");
