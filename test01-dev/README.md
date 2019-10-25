@@ -14,6 +14,7 @@ cd react-wseditor-demo
 cd test01-dev
 git submodule update --init --recursive
 git submodule foreach git pull origin master
+git submodule foreach git checkout master
 yarn install
 code .
 ```
