@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Grid, TextField, Button, Typography, FormControlLabel, Checkbox, createStyles, Theme, makeStyles } from '@material-ui/core';
-import WSEditorColumn from './react-wseditor/src/WSEditorColumn';
+import WSEditorColumn, { SortDirection } from './react-wseditor/src/WSEditorColumn';
 import WSEditorCellEditorText from './react-wseditor/src/WSEditorCellEditorText';
 import WSEditorCellEditorNumber from './react-wseditor/src/WSEditorCellEditorNumber';
 import WSEditorCellEditorBoolean from './react-wseditor/src/WSEditorCellEditorBoolean';
@@ -33,11 +33,14 @@ const App: React.FC = () => {
   const q1: MyData[] = [];
 
   useEffect(() => {
+    // POPULATE DATA
     for (let i = 0; i < ROWS_COUNT; ++i) {
-      q1.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: 'x' + i, col3: i, col4: true });
+      q1.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: String.fromCharCode(65 + i % 24) + " " + i, col3: i, col4: true });
     }
     setRows(q1);
+
     setFilteredRows(q1);
+
     const q2: WSEditorColumn<MyData>[] = [
       {
         header: "R",
@@ -56,6 +59,20 @@ const App: React.FC = () => {
         header: "column 2 (text)",
         field: "col2",
         maxWidth: "15%",
+        sortFn: (a, b, dir) => {
+          const aStrNum = a.col2.replace(/[^\d+]/g, "");
+          const bStrNum = b.col2.replace(/[^\d+]/g, "");
+          if (aStrNum.length > 0 && bStrNum.length > 0) {
+            const va = parseInt(aStrNum);
+            const vb = parseInt(bStrNum);            
+            const ascRes = va < vb ? -1 : 1;
+            if (dir === SortDirection.Descending)
+              return -ascRes;
+            else
+              return ascRes;
+          }
+          return a.col2 < b.col2 ? -1 : 1; // fallback str
+        },
         editor: (props, editor, viewCell) => new WSEditorCellEditorText(props, editor, viewCell),
       },
       {
@@ -252,7 +269,7 @@ const App: React.FC = () => {
             selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
             selectionModeMulti={SELECT_MODE_MULTI}
             debug={true}
-            width={EDITOR_100PC ? "100%" : EDITOR_WIDTH}            
+            width={EDITOR_100PC ? "100%" : EDITOR_WIDTH}
             viewRowCount={GRID_VIEW_ROWS}
             onCellDataChanged={(row, cell, data) => {
               const q = row.col1; // typed row
