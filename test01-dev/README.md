@@ -6,6 +6,27 @@ development test
 
 this project associate react-wseditor as git submodule in order to allow debug directly tsx files.
 
+## How to contribute (quickstart)
+
+```sh
+git clone https://github.com/devel0/react-wseditor-demo.git
+cd react-wseditor-demo
+cd test01-dev
+git submodule update --init --recursive
+git submodule foreach git pull origin master
+yarn install
+code .
+```
+
+from vscode open terminal ctrl+`
+
+```sh
+yarn install
+yarn start
+```
+
+when read hit F5 to debug with chrome ( [more info](https://github.com/devel0/react-wseditor-demo/blob/master/test01-dev/README.md) )
+
 ## how this project was built
 
 - create source tree skeleton
