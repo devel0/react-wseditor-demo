@@ -1,3 +1,6 @@
 [submodule "test01-dev/src/react-wseditor"]
 	path = test01-dev/src/react-wseditor
 	url = https://github.com/devel0/react-wseditor
+[submodule "test02-dev/src/react-wseditor"]
+	path = test02-dev/src/react-wseditor
+	url = https://github.com/devel0/react-wseditor.git
