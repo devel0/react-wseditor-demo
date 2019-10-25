@@ -1,6 +1,6 @@
 # react-wseditor test01-dev
 
-development test
+development test for [react-wseditor](https://github.com/devel0/react-wseditor)
 
 ![](doc/sample-debug.png)
 
