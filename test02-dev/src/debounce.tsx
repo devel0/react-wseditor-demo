@@ -7,7 +7,7 @@ export default function useDebounce(value: any, ms: number) {
         const handler = setTimeout(() => setDebouncedValue(value), ms);
 
         return () => clearTimeout(handler);
-    }, [value]);
+    }, [value, ms]);
 
     return debouncedValue;
 }

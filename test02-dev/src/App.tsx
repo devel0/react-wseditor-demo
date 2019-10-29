@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Grid, TextField, Button, Typography, FormControlLabel, Checkbox, createStyles, Theme, makeStyles } from '@material-ui/core';
+import { Grid, TextField, Button, Typography, FormControlLabel, Checkbox, makeStyles } from '@material-ui/core';
 import WSEditorColumn, { SortDirection } from './react-wseditor/src/WSEditorColumn';
 import WSEditorCellEditorText from './react-wseditor/src/WSEditorCellEditorText';
 import WSEditorCellEditorNumber from './react-wseditor/src/WSEditorCellEditorNumber';
@@ -30,41 +29,54 @@ const App: React.FC = () => {
   const [filteredRows, setFilteredRows] = useState<MyData[]>([]);
   const [cols, setCols] = useState<WSEditorColumn<MyData>[]>([]);
 
-  const q1: MyData[] = [];
+  const q1 = useRef([] as MyData[]);
+  const q2 = useRef([] as WSEditorColumn<MyData>[]);
 
   useEffect(() => {
+    q1.current = [];
+
     // POPULATE DATA
     for (let i = 0; i < ROWS_COUNT; ++i) {
-      q1.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: String.fromCharCode(65 + i % 24) + " " + i, col3: i, col4: true });
+      q1.current.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: String.fromCharCode(65 + i % 24) + " " + i, col3: i, col4: true });
     }
-    setRows(q1);
+    setRows(q1.current);
 
-    setFilteredRows(q1);
+    setFilteredRows(q1.current);
 
-    const q2: WSEditorColumn<MyData>[] = [
+    q2.current = [
       {
-        header: "R",
+        header: "viewrowidx (custom cell editor)",
         field: "",
         maxWidth: "10%",
+        cellContainerStyle: { background: "cyan" },
+        // custom cell editor inline        
         editor: (props, editor, viewCell) => new WSEditorCellEditor(props, editor, viewCell, (cellEditor) => {
           return <>{viewCell.getCellCoord(editor.state.scrollOffset).rowIdx + 1}</>
         }),
       },
       {
-        header: "column 1 (text default)",
+        header: "default cell",
         field: "col1",
         maxWidth: "20%",
+        sortDir: SortDirection.Descending,
+        sortOrder: 0,
+        cellContainerStyle: { background: "yellow" },
+        // editor: (props,editor,viewCell) => new WSEditorCellEditor(props,editor,viewCell, (cellEditor) => {
+        //   return props.data
+        // })
       },
       {
-        header: "column 2 (text)",
+        header: "cell editor text",
         field: "col2",
         maxWidth: "15%",
+        sortDir: SortDirection.Descending,
+        sortOrder: 1,
         sortFn: (a, b, dir) => {
           const aStrNum = a.col2.replace(/[^\d+]/g, "");
           const bStrNum = b.col2.replace(/[^\d+]/g, "");
           if (aStrNum.length > 0 && bStrNum.length > 0) {
             const va = parseInt(aStrNum);
-            const vb = parseInt(bStrNum);            
+            const vb = parseInt(bStrNum);
             const ascRes = va < vb ? -1 : 1;
             if (dir === SortDirection.Descending)
               return -ascRes;
@@ -76,23 +88,24 @@ const App: React.FC = () => {
         editor: (props, editor, viewCell) => new WSEditorCellEditorText(props, editor, viewCell),
       },
       {
-        header: "column 3 (number)",
+        header: "cell editor number",
         field: "col3",
         maxWidth: "15%",
         editor: (props, editor, viewCell) => new WSEditorCellEditorNumber(props, editor, viewCell),
       },
       {
-        header: "column 4 (boolean)",
+        header: "cell editor boolean",
         field: "col4",
         maxWidth: "40%",
+        cellContainerStyle: { paddingLeft: "2em" },
         editor: (props, editor, viewCell) => new WSEditorCellEditorBoolean(props, editor, viewCell, {
-          label: <Typography style={{ marginRight: "1em" }}>lbl for row idx= {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx}</Typography>,
-          labelPlacement: "start",
-          textAlign: "center"
+          label: <Typography style={{ marginLeft: "1em" }}>lbl for row idx= {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx}</Typography>,
+          labelPlacement: "end",
+          // textAlign: "left"
         }),
       },
     ];
-    setCols(q2);
+    setCols(q2.current);
   }, [ROWS_COUNT]);
 
   const useStyles = makeStyles({
@@ -129,7 +142,7 @@ const App: React.FC = () => {
     }
     else if (rows.length > 0)
       setFilteredRows(rows);
-  }, [debouncedFilter]);
+  }, [debouncedFilter, rows]);
 
   return <div
     style={{
@@ -138,147 +151,143 @@ const App: React.FC = () => {
       overflow: "auto",
       width: "100%", height: "100%",
     }}>
-    <div
-      style={{
-        border: "1px solid", borderStyle: "dashed",
-        margin: "1em", padding: 0,
-        width: "calc(100% - 2em)", height: "calc(100% - 2em)",
-      }}>
-      <Grid container={true} direction="column">
-        <Grid item={true}>
+    <Grid container={true} direction="column" style={{ padding: "1em" }}>
+      <Grid item={true}>
 
-          <Grid container={true} direction="row">
-            {/* ROWS COUNT */}
-            <Grid item={true} xs="auto">
-              <Typography>Rows count</Typography>
-            </Grid>
-            <Grid item={true} xs="auto" className={classes.maginLeft1}>
-              <TextField className={classes.smallTextField} value={ROWS_COUNT} onChange={(v) => {
-                const n = parseInt(v.target.value);
-                if (!isNaN(n)) SET_GRID_SIZE(parseInt(v.target.value));
-              }} />
-            </Grid>
-
-            {/* GRID VIEW ROWS */}
-            <Grid item={true} xs="auto" className={classes.maginLeft1}>
-              <Typography>Grid view rows</Typography>
-            </Grid>
-            <Grid item={true} xs="auto" className={classes.maginLeft1}>
-              <TextField className={classes.smallTextField} value={GRID_VIEW_ROWS} onChange={(v) => {
-                const n = parseInt(v.target.value);
-                if (!isNaN(n)) SET_GRID_VIEW_ROWS(n);
-              }} />
-            </Grid>
-
-            {/* FILTER */}
-            <Grid item={true} xs="auto" className={classes.maginLeft1}>
-              <Typography>Filter</Typography>
-            </Grid>
-            <Grid item={true} xs="auto" className={classes.maginLeft1}>
-              <TextField className={classes.smallTextField} value={FILTER} onChange={(v) => SET_FILTER(v.target.value)} />
-            </Grid>
+        <Grid container={true} direction="row">
+          {/* ROWS COUNT */}
+          <Grid item={true} xs="auto">
+            <Typography>Rows count</Typography>
+          </Grid>
+          <Grid item={true} xs="auto" className={classes.maginLeft1}>
+            <TextField className={classes.smallTextField} value={ROWS_COUNT} onChange={(v) => {
+              const n = parseInt(v.target.value);
+              if (!isNaN(n)) SET_GRID_SIZE(parseInt(v.target.value));
+            }} />
           </Grid>
 
-          <Grid container={true} direction="row">
-            {/* SELECT MODE ROWS */}
-            <Grid item={true} xs="auto">
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={SELECT_MODE_ROWS}
-                    onChange={(v) => SET_SELECT_MODE_ROWS(v.target.checked)}
-                    value="checkedF"
-                  />
-                }
-                label="Select mode rows"
-              />
-            </Grid>
-
-            {/* SELECT MODE MULTI */}
-            <Grid item={true} xs="auto">
-              <FormControlLabel
-                className={classes.maginLeft1}
-                control={
-                  <Checkbox
-                    checked={SELECT_MODE_MULTI}
-                    onChange={(v) => SET_SELECT_MODE_MULTI(v.target.checked)}
-                    value="checkedF"
-                  />
-                }
-                label="Select mode multi"
-              />
-            </Grid>
+          {/* GRID VIEW ROWS */}
+          <Grid item={true} xs="auto" className={classes.maginLeft1}>
+            <Typography>Grid view rows</Typography>
+          </Grid>
+          <Grid item={true} xs="auto" className={classes.maginLeft1}>
+            <TextField className={classes.smallTextField} value={GRID_VIEW_ROWS} onChange={(v) => {
+              const n = parseInt(v.target.value);
+              if (!isNaN(n)) SET_GRID_VIEW_ROWS(n);
+            }} />
           </Grid>
 
-          <Grid container={true} direction="row">
-            {/* EDITOR WIDTH */}
-            <Grid item={true} xs="auto">
-              <Typography>Editor width</Typography>
-            </Grid>
-            <Grid item={true} xs="auto" className={classes.maginLeft1}>
-              <TextField className={classes.smallTextField} value={EDITOR_WIDTH} onChange={(v) => {
-                const n = parseInt(v.target.value);
-                if (!isNaN(n)) SET_EDITOR_WIDTH(parseInt(v.target.value));
-              }} />
-            </Grid>
-
-            {/* SELECT MODE MULTI */}
-            <Grid item={true} xs="auto">
-              <FormControlLabel
-                className={classes.maginLeft1}
-                control={
-                  <Checkbox
-                    checked={EDITOR_100PC}
-                    onChange={(v) => SET_EDITOR_100PC(v.target.checked)}
-                    value="checkedF"
-                  />
-                }
-                label="Editor width 100%"
-              />
-            </Grid>
+          {/* FILTER */}
+          <Grid item={true} xs="auto" className={classes.maginLeft1}>
+            <Typography>Filter</Typography>
+          </Grid>
+          <Grid item={true} xs="auto" className={classes.maginLeft1}>
+            <TextField className={classes.smallTextField} value={FILTER} onChange={(v) => SET_FILTER(v.target.value)} />
           </Grid>
         </Grid>
 
-        {/* BUTTONS */}
-        <Grid item={true} xs={12}>
-          <Grid container={true} direction="row">
-            <Button color="primary" onClick={() => {
-              if (editorRef.current) {
-                const editor = editorRef.current;
-                const newRowsCount = editor.props.rows.length + 1;
-                const addedRowIdx = editor.addRow({ col1: "new row", col2: "", col3: 0, col4: false } as MyData, true);
-                editor.scrollToRow(addedRowIdx, newRowsCount);
-                editor.selectRow(addedRowIdx, newRowsCount);
+        <Grid container={true} direction="row">
+          {/* SELECT MODE ROWS */}
+          <Grid item={true} xs="auto">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={SELECT_MODE_ROWS}
+                  onChange={(v) => SET_SELECT_MODE_ROWS(v.target.checked)}
+                  value="checkedF"
+                />
               }
-            }}>add row</Button>
-            <Button color="primary" onClick={() => {
-              if (editorRef.current) {
-                const editor = editorRef.current;
-                editor.deleteRows(editor.selectedRows());
+              label="Select mode rows"
+            />
+          </Grid>
+
+          {/* SELECT MODE MULTI */}
+          <Grid item={true} xs="auto">
+            <FormControlLabel
+              className={classes.maginLeft1}
+              control={
+                <Checkbox
+                  checked={SELECT_MODE_MULTI}
+                  onChange={(v) => SET_SELECT_MODE_MULTI(v.target.checked)}
+                  value="checkedF"
+                />
               }
-            }}>delete rows</Button>
+              label="Select mode multi"
+            />
           </Grid>
         </Grid>
 
-        {/* EDITOR */}
-        <Grid item={true} xs={12} style={{ padding: "1em" }}>
-          <WSEditor
-            ref={editorRef}
-            rows={filteredRows} setRows={setFilteredRows}
-            cols={cols} setCols={setCols}
-            selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
-            selectionModeMulti={SELECT_MODE_MULTI}
-            debug={true}
-            width={EDITOR_100PC ? "100%" : EDITOR_WIDTH}
-            viewRowCount={GRID_VIEW_ROWS}
-            onCellDataChanged={(row, cell, data) => {
-              const q = row.col1; // typed row
-              console.log("data changed on row:" + JSON.stringify(row) + " cell:" + cell + " data:" + data);
-            }}
-          />
+        <Grid container={true} direction="row">
+          {/* EDITOR WIDTH */}
+          <Grid item={true} xs="auto">
+            <Typography>Editor width</Typography>
+          </Grid>
+          <Grid item={true} xs="auto" className={classes.maginLeft1}>
+            <TextField className={classes.smallTextField} value={EDITOR_WIDTH} onChange={(v) => {
+              const n = parseInt(v.target.value);
+              if (!isNaN(n)) SET_EDITOR_WIDTH(parseInt(v.target.value));
+            }} />
+          </Grid>
+
+          {/* SELECT MODE MULTI */}
+          <Grid item={true} xs="auto">
+            <FormControlLabel
+              className={classes.maginLeft1}
+              control={
+                <Checkbox
+                  checked={EDITOR_100PC}
+                  onChange={(v) => SET_EDITOR_100PC(v.target.checked)}
+                  value="checkedF"
+                />
+              }
+              label="Editor width 100%"
+            />
+          </Grid>
         </Grid>
       </Grid>
-    </div>
+
+      {/* BUTTONS */}
+      <Grid item={true} xs={12}>
+        <Grid container={true} direction="row">
+          <Button color="primary" onClick={() => {
+            if (editorRef.current) {
+              const editor = editorRef.current;
+              const newRowsCount = editor.props.rows.length + 1;
+              const addedRowIdx = editor.addRow({ col1: "new row", col2: "", col3: 0, col4: false } as MyData);
+              editor.scrollToRow(addedRowIdx, newRowsCount);
+              editor.selectRow(addedRowIdx, newRowsCount);
+            }
+          }}>add row</Button>
+          <Button color="primary" onClick={() => {
+            if (editorRef.current) {
+              const editor = editorRef.current;
+              editor.deleteRows(editor.selectedRows());
+            }
+          }}>delete rows</Button>
+        </Grid>
+      </Grid>
+
+      {/* EDITOR */}
+      <Grid item={true} xs={12}>
+        <WSEditor
+          ref={editorRef}
+          rows={filteredRows} setRows={setFilteredRows}
+          cols={cols} setCols={setCols}
+          selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
+          selectionModeMulti={SELECT_MODE_MULTI}
+          debug={true}
+          cellContainerStyle={{ lineHeight: "2em" }}
+          // cellControlStyle={{ verticalAlign: "middle" }}
+          width={EDITOR_100PC ? "100%" : EDITOR_WIDTH}
+          viewRowCount={GRID_VIEW_ROWS}
+          onCellDataChanged={(row, cell, data) => {
+            // const q = row.col1; // typed row
+            console.log("data changed on row:" + JSON.stringify(row) + " cell:" + cell + " data:" + data);
+          }}
+        />
+      </Grid>
+    </Grid>
+
   </div>
 }
 
