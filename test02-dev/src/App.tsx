@@ -9,6 +9,7 @@ import WSEditor from './react-wseditor/src/WSEditor';
 import { WSEditorSelectMode } from './react-wseditor/src/WSEditorSelection';
 import useDebounce from './debounce';
 import WSEditorCellEditor from './react-wseditor/src/WSEditorCellEditor';
+import { CSSProperties } from '@material-ui/styles';
 
 interface MyData {
   col1: string,
@@ -86,6 +87,7 @@ const App: React.FC = () => {
           return a.col2 < b.col2 ? -1 : 1; // fallback str
         },
         editor: (props, editor, viewCell) => new WSEditorCellEditorText(props, editor, viewCell),
+        cellControlStyle: (editor, viewCell) => { return { textAlign: "center" } as CSSProperties },
       },
       {
         header: "cell editor number",
@@ -97,11 +99,10 @@ const App: React.FC = () => {
         header: "cell editor boolean",
         field: "col4",
         maxWidth: "40%",
-        cellContainerStyle: { paddingLeft: "2em" },
         editor: (props, editor, viewCell) => new WSEditorCellEditorBoolean(props, editor, viewCell, {
           label: <Typography style={{ marginLeft: "1em" }}>lbl for row idx= {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx}</Typography>,
           labelPlacement: "end",
-          // textAlign: "left"
+          textAlign: "left"
         }),
       },
     ];
@@ -139,7 +140,7 @@ const App: React.FC = () => {
         console.log(rows.length + " rows filtered to " + q.length);
         setFilteredRows(q);
       }
-    }    
+    }
     else if (rows.length > 0)
       setFilteredRows(rows);
   }, [debouncedFilter, rows]);
@@ -276,13 +277,13 @@ const App: React.FC = () => {
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
           selectionModeMulti={SELECT_MODE_MULTI}
           debug={true}
-          cellContainerStyle={{ lineHeight: "2em" }}
-          currentCellContainerStyle={{ border: SELECT_MODE_ROWS ? 0 : "1px solid red" }}                    
+          cellContainerStyle={(editor, viewCell) => { return { lineHeight: "2em" } }}
+          currentCellContainerStyle={(editor, viewCell) => { return { border: SELECT_MODE_ROWS ? 0 : "1px solid rgba(56,90,162,0.8)" } }}
           width={EDITOR_100PC ? "100%" : EDITOR_WIDTH}
           viewRowCount={GRID_VIEW_ROWS}
           onCellDataChanged={(row, cell, data) => {
             // const q = row.col1; // typed row
-            console.log("data changed on row:" + JSON.stringify(row) + " cell:" + cell + " data:" + data);
+            console.log("data changed on cell:" + cell + " data:" + data);
           }}
         />
       </Grid>
