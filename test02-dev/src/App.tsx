@@ -281,7 +281,7 @@ const App: React.FC = () => {
           currentCellContainerStyle={(editor, viewCell) => { return { border: SELECT_MODE_ROWS ? 0 : "1px solid rgba(56,90,162,0.8)" } }}
           width={EDITOR_100PC ? "100%" : EDITOR_WIDTH}
           viewRowCount={GRID_VIEW_ROWS}
-          onCellDataChanged={(row, cell, data) => {
+          onCellDataChanged={(editor, row, cell, data) => {
             // const q = row.col1; // typed row
             console.log("data changed on cell:" + cell + " data:" + data);
           }}

@@ -94,8 +94,8 @@ const App: React.FC = () => {
           }
           return a.col2 < b.col2 ? -1 : 1; // fallback str
         },
-        editor: (props, editor, viewCell) => new WSEditorCellEditorText(props, editor, viewCell),        
-        cellControlStyle: (editor, viewCell) => { return { textAlign: "center" } as CSSProperties},
+        editor: (props, editor, viewCell) => new WSEditorCellEditorText(props, editor, viewCell),
+        cellControlStyle: (editor, viewCell) => { return { textAlign: "center" } as CSSProperties },
       },
       {
         header: "cell editor number",
@@ -264,7 +264,7 @@ const App: React.FC = () => {
               const newRowsCount = editor.props.rows.length + 1;
               const addedRowIdx = editor.addRow({ col1: "new row", col2: "", col3: 0, col4: false } as MyData);
               editor.scrollToRow(addedRowIdx, newRowsCount);
-              editor.selectRow(addedRowIdx, newRowsCount);
+              editor.selectRow(addedRowIdx);
             }
           }}>add row</Button>
           <Button color="primary" onClick={() => {
@@ -292,6 +292,12 @@ const App: React.FC = () => {
           onCellDataChanged={(row, cell, data) => {
             // const q = row.col1; // typed row
             console.log("data changed on cell:" + cell + " data:" + data);
+          }}
+          onRowsAdded={(editor, rows) => {
+            console.log(rows.length + " rows added");
+          }}
+          onRowsDeleted={(editor, rows) => {
+            console.log(rows.length + " rows deleted");
           }}
         />
       </Grid>
