@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { Grid, TextField, Button, Typography, FormControlLabel, Checkbox, makeStyles } from '@material-ui/core';
-import WSEditorColumn, { SortDirection } from './react-wseditor/src/WSEditorColumn';
-import WSEditorCellEditorText from './react-wseditor/src/WSEditorCellEditorText';
-import WSEditorCellEditorNumber from './react-wseditor/src/WSEditorCellEditorNumber';
-import WSEditorCellEditorBoolean from './react-wseditor/src/WSEditorCellEditorBoolean';
-import WSEditor from './react-wseditor/src/WSEditor';
-import { WSEditorSelectMode } from './react-wseditor/src/WSEditorSelection';
-import useDebounce from './debounce';
-import WSEditorCellEditor from './react-wseditor/src/WSEditorCellEditor';
+import {
+  WSEditor, WSEditorColumn, WSEditorCellEditor, WSEditorCellEditorText,
+  WSEditorCellEditorNumber, WSEditorCellEditorBoolean, WSEditorSelectMode, SortDirection
+} from 'react-wseditor';
 import { CSSProperties } from '@material-ui/styles';
 
 interface MyData {
@@ -16,6 +12,18 @@ interface MyData {
   col2: string,
   col3: number,
   col4: boolean
+}
+
+function useDebounce(value: any, ms: number) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+      const handler = setTimeout(() => setDebouncedValue(value), ms);
+
+      return () => clearTimeout(handler);
+  }, [value, ms]);
+
+  return debouncedValue;
 }
 
 const App: React.FC = () => {
@@ -86,8 +94,8 @@ const App: React.FC = () => {
           }
           return a.col2 < b.col2 ? -1 : 1; // fallback str
         },
-        editor: (props, editor, viewCell) => new WSEditorCellEditorText(props, editor, viewCell),
-        cellControlStyle: (editor, viewCell) => { return { textAlign: "center" } as CSSProperties },
+        editor: (props, editor, viewCell) => new WSEditorCellEditorText(props, editor, viewCell),        
+        cellControlStyle: (editor, viewCell) => { return { textAlign: "center" } as CSSProperties},
       },
       {
         header: "cell editor number",
@@ -256,7 +264,7 @@ const App: React.FC = () => {
               const newRowsCount = editor.props.rows.length + 1;
               const addedRowIdx = editor.addRow({ col1: "new row", col2: "", col3: 0, col4: false } as MyData);
               editor.scrollToRow(addedRowIdx, newRowsCount);
-              editor.selectRow(addedRowIdx);
+              editor.selectRow(addedRowIdx, newRowsCount);
             }
           }}>add row</Button>
           <Button color="primary" onClick={() => {
@@ -284,12 +292,6 @@ const App: React.FC = () => {
           onCellDataChanged={(row, cell, data) => {
             // const q = row.col1; // typed row
             console.log("data changed on cell:" + cell + " data:" + data);
-          }}
-          onRowsAdded={(editor, rows) => {
-            console.log(rows.length + " rows added");
-          }}
-          onRowsDeleted={(editor, rows) => {
-            console.log(rows.length + " rows deleted");
           }}
         />
       </Grid>
