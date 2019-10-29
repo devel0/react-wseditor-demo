@@ -48,7 +48,7 @@ const App: React.FC = () => {
         header: "viewrowidx (custom cell editor)",
         field: "",
         maxWidth: "10%",
-        cellContainerStyle: { background: "cyan" },
+        // cellContainerStyle: { background: "cyan" },
         // custom cell editor inline        
         editor: (props, editor, viewCell) => new WSEditorCellEditor(props, editor, viewCell, (cellEditor) => {
           return <>{viewCell.getCellCoord(editor.state.scrollOffset).rowIdx + 1}</>
@@ -60,7 +60,7 @@ const App: React.FC = () => {
         maxWidth: "20%",
         sortDir: SortDirection.Descending,
         sortOrder: 0,
-        cellContainerStyle: { background: "yellow" },
+        // cellContainerStyle: { background: "yellow" },
         // editor: (props,editor,viewCell) => new WSEditorCellEditor(props,editor,viewCell, (cellEditor) => {
         //   return props.data
         // })
@@ -139,7 +139,7 @@ const App: React.FC = () => {
         console.log(rows.length + " rows filtered to " + q.length);
         setFilteredRows(q);
       }
-    }
+    }    
     else if (rows.length > 0)
       setFilteredRows(rows);
   }, [debouncedFilter, rows]);
@@ -277,7 +277,7 @@ const App: React.FC = () => {
           selectionModeMulti={SELECT_MODE_MULTI}
           debug={true}
           cellContainerStyle={{ lineHeight: "2em" }}
-          // cellControlStyle={{ verticalAlign: "middle" }}
+          currentCellContainerStyle={{ border: SELECT_MODE_ROWS ? 0 : "1px solid red" }}                    
           width={EDITOR_100PC ? "100%" : EDITOR_WIDTH}
           viewRowCount={GRID_VIEW_ROWS}
           onCellDataChanged={(row, cell, data) => {
