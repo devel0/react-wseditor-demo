@@ -49,10 +49,12 @@ const App: React.FC = () => {
         header: "viewrowidx (custom cell editor)",
         field: "",
         maxWidth: "10%",
-        // cellContainerStyle: { background: "cyan" },
+        cellControlStyle: (editor, view, defaultStyle) => { return Object.assign(defaultStyle, { textAlign: "center" }) },
         // custom cell editor inline        
         editor: (props, editor, viewCell) => new WSEditorCellEditor(props, editor, viewCell, (cellEditor) => {
-          return <>{viewCell.getCellCoord(editor.state.scrollOffset).rowIdx + 1}</>
+          return <div style={WSEditor.defaultProps.cellControlStyle!(editor, viewCell, {})}>
+            {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx + 1}
+          </div>
         }),
       },
       {
@@ -277,7 +279,8 @@ const App: React.FC = () => {
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
           selectionModeMulti={SELECT_MODE_MULTI}
           debug={true}
-          cellContainerStyle={(editor, viewCell) => { return { lineHeight: "2em" } }}
+          headerCellStyle={(props, defaultStyle) => { return { textDecoration: "underline" } }}
+          cellContainerStyle={(editor, viewCell, defaultStyle) => { return { lineHeight: "2em" } }}
           currentCellContainerStyle={(editor, viewCell) => { return { border: SELECT_MODE_ROWS ? 0 : "1px solid rgba(56,90,162,0.8)" } }}
           width={EDITOR_100PC ? "100%" : EDITOR_WIDTH}
           viewRowCount={GRID_VIEW_ROWS}
