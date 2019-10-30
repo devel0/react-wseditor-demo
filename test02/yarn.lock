@@ -8364,13 +8364,6 @@ react-error-overlay@^6.0.3:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.3.tgz#c378c4b0a21e88b2e159a3e62b2f531fd63bf60d"
   integrity sha512-bOUvMWFQVk5oz8Ded9Xb7WVdEi3QGLC8tH7HmYP0Fdp4Bn3qw0tRFmr5TW6mvahzvmrK4a6bqWGfCevBflP+Xw==
 
-react-icons@^3.7.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-3.8.0.tgz#229de5904809696c9f46932bd9b6126b2522866e"
-  integrity sha512-rA/8GRKjPulft8BSBSMsHkE1AGPqJ7LjNsyk0BE7XjG70Iz62zOled2SJk7LDo8x9z86a3xOstDlKlMZ4pAy7A==
-  dependencies:
-    camelcase "^5.0.0"
-
 react-is@^16.6.0:
   version "16.11.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.11.0.tgz#b85dfecd48ad1ce469ff558a882ca8e8313928fa"
@@ -8457,10 +8450,10 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-wseditor@^0.3.26-0:
-  version "0.3.26-0"
-  resolved "https://registry.yarnpkg.com/react-wseditor/-/react-wseditor-0.3.26-0.tgz#9efcb80bed8d02da995081f73aee83d595487629"
-  integrity sha512-A4nN2K2hG+4KACk+wFqSRuev6/DoGj0J0yb3Uh4FaI2fPqSn/UOfXSl4xNEvgoS/hAMojtyL+8VclWjaOMgsfQ==
+react-wseditor@^0.4.2-0:
+  version "0.4.2-0"
+  resolved "https://registry.yarnpkg.com/react-wseditor/-/react-wseditor-0.4.2-0.tgz#f577a9e5a76579a1d742311ff37bbe296970c044"
+  integrity sha512-Ft7oz03ki/uhBiKuisZ3P0jvIz4l/Muu0XDKYHPZ2UVwN8Mcb0x1IX8V3Vx1sseACGUtVxqIwmzAbZAHrHh94A==
   dependencies:
     "@material-ui/core" "^4.5.1"
     "@material-ui/icons" "^4.5.1"
@@ -8468,7 +8461,6 @@ react-wseditor@^0.3.26-0:
     "@types/react-dom" "^16.9.2"
     react "^16.11.0"
     react-dom "^16.11.0"
-    react-icons "^3.7.0"
     styled-components "^4.4.0"
 
 react@^16.11.0:
