@@ -18,9 +18,9 @@ function useDebounce(value: any, ms: number) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
-      const handler = setTimeout(() => setDebouncedValue(value), ms);
+    const handler = setTimeout(() => setDebouncedValue(value), ms);
 
-      return () => clearTimeout(handler);
+    return () => clearTimeout(handler);
   }, [value, ms]);
 
   return debouncedValue;
@@ -55,14 +55,13 @@ const App: React.FC = () => {
     q2.current = [
       {
         header: "viewrowidx (custom cell editor)",
-        field: "",
-        maxWidth: "10%",
-        cellControlStyle: (editor, view) => { return { textAlign: "center" } },        
+        field: undefined,
+        maxWidth: "10%",        
         // custom cell editor inline        
         editor: (props, editor, viewCell) => new WSEditorCellEditor(props, editor, viewCell, (cellEditor) => {
-          return <Grid style={WSEditor.defaultProps.cellContainerStyle!(editor, viewCell)}>
+          return <div>
             {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx + 1}
-          </Grid>
+          </div>
         }),
       },
       {
@@ -285,7 +284,7 @@ const App: React.FC = () => {
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
           selectionModeMulti={SELECT_MODE_MULTI}
           debug={true}
-          cellContainerHoverStyle={(editor,viewCell) => { return { background: "rgba(0,6,0,0.05)" } }}
+          cellContainerHoverStyle={(editor, viewCell) => { return { background: "rgba(0,6,0,0.05)" } }}
           // headerCellStyle={(props) => { return { textDecoration: "underline" } }}
           // cellContainerStyle={(editor, viewCell) => { return { lineHeight: "2em" } }}
           // gridCellFocusedStyle={(editor, viewCell) => { return { border: SELECT_MODE_ROWS ? 0 : "1px solid rgba(56,90,162,0.8)" } }}
