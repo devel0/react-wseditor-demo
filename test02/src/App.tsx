@@ -25,12 +25,13 @@ function useDebounce(value: any, ms: number) {
 
   return debouncedValue;
 }
+
 const App: React.FC = () => {
   const [ROWS_COUNT, SET_GRID_SIZE] = useState(1200);
   const [EDITOR_WIDTH, SET_EDITOR_WIDTH] = useState(2000);
   const [EDITOR_100PC, SET_EDITOR_100PC] = useState(true);
-  const [GRID_VIEW_ROWS, SET_GRID_VIEW_ROWS] = useState(6);
-  const [SELECT_MODE_ROWS, SET_SELECT_MODE_ROWS] = useState(false);
+  const [GRID_VIEW_ROWS, SET_GRID_VIEW_ROWS] = useState(5);
+  const [SELECT_MODE_ROWS, SET_SELECT_MODE_ROWS] = useState(true);
   const [SELECT_MODE_MULTI, SET_SELECT_MODE_MULTI] = useState(true);
   const [FILTER, SET_FILTER] = useState("");
   const [rows, setRows] = useState<MyData[]>([]);
@@ -56,12 +57,12 @@ const App: React.FC = () => {
         header: "viewrowidx (custom cell editor)",
         field: "",
         maxWidth: "10%",
-        cellControlStyle: (editor, view, defaultStyle) => { return Object.assign(defaultStyle, { textAlign: "center" }) },
+        cellControlStyle: (editor, view) => { return { textAlign: "center" } },        
         // custom cell editor inline        
         editor: (props, editor, viewCell) => new WSEditorCellEditor(props, editor, viewCell, (cellEditor) => {
-          return <div style={WSEditor.defaultProps.cellControlStyle!(editor, viewCell, {})}>
+          return <Grid style={WSEditor.defaultProps.cellContainerStyle!(editor, viewCell)}>
             {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx + 1}
-          </div>
+          </Grid>
         }),
       },
       {
@@ -96,7 +97,7 @@ const App: React.FC = () => {
           return a.col2 < b.col2 ? -1 : 1; // fallback str
         },
         editor: (props, editor, viewCell) => new WSEditorCellEditorText(props, editor, viewCell),
-        cellControlStyle: (editor, viewCell) => { return { textAlign: "center" } as CSSProperties },
+        // cellControlStyle: (editor, viewCell) => { return { textAlign: "center" } as CSSProperties },
       },
       {
         header: "cell editor number",
@@ -108,10 +109,11 @@ const App: React.FC = () => {
         header: "cell editor boolean",
         field: "col4",
         maxWidth: "40%",
+        cellControlStyle: (editor, viewCell) => { return { marginLeft: "1em" } as CSSProperties },
+        // justify: "flex-start",
         editor: (props, editor, viewCell) => new WSEditorCellEditorBoolean(props, editor, viewCell, {
-          label: <Typography style={{ marginLeft: "1em" }}>lbl for row idx= {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx}</Typography>,
+          label: <Typography>lbl for row idx= {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx}</Typography>,
           labelPlacement: "end",
-          textAlign: "left"
         }),
       },
     ];
@@ -162,6 +164,7 @@ const App: React.FC = () => {
       width: "100%", height: "100%",
     }}>
     <Grid container={true} direction="column" style={{ padding: "1em" }}>
+      {/* TOOLBAR */}
       <Grid item={true}>
 
         <Grid container={true} direction="row">
@@ -194,11 +197,9 @@ const App: React.FC = () => {
           <Grid item={true} xs="auto" className={classes.maginLeft1}>
             <TextField className={classes.smallTextField} value={FILTER} onChange={(v) => SET_FILTER(v.target.value)} />
           </Grid>
-        </Grid>
 
-        <Grid container={true} direction="row">
           {/* SELECT MODE ROWS */}
-          <Grid item={true} xs="auto">
+          <Grid item={true} xs="auto" className={classes.maginLeft1}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -214,7 +215,6 @@ const App: React.FC = () => {
           {/* SELECT MODE MULTI */}
           <Grid item={true} xs="auto">
             <FormControlLabel
-              className={classes.maginLeft1}
               control={
                 <Checkbox
                   checked={SELECT_MODE_MULTI}
@@ -240,9 +240,8 @@ const App: React.FC = () => {
           </Grid>
 
           {/* SELECT MODE MULTI */}
-          <Grid item={true} xs="auto">
+          <Grid item={true} xs="auto" className={classes.maginLeft1}>
             <FormControlLabel
-              className={classes.maginLeft1}
               control={
                 <Checkbox
                   checked={EDITOR_100PC}
@@ -286,9 +285,11 @@ const App: React.FC = () => {
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
           selectionModeMulti={SELECT_MODE_MULTI}
           debug={true}
-          headerCellStyle={(props, defaultStyle) => { return { textDecoration: "underline" } }}
-          cellContainerStyle={(editor, viewCell, defaultStyle) => { return { lineHeight: "2em" } }}
-          currentCellContainerStyle={(editor, viewCell) => { return { border: SELECT_MODE_ROWS ? 0 : "1px solid rgba(56,90,162,0.8)" } }}
+          cellContainerHoverStyle={(editor,viewCell) => { return { background: "rgba(0,6,0,0.05)" } }}
+          // headerCellStyle={(props) => { return { textDecoration: "underline" } }}
+          // cellContainerStyle={(editor, viewCell) => { return { lineHeight: "2em" } }}
+          // gridCellFocusedStyle={(editor, viewCell) => { return { border: SELECT_MODE_ROWS ? 0 : "1px solid rgba(56,90,162,0.8)" } }}
+          // selectionStyle={(editor, viewCell) => { return { color: "red"} }}
           width={EDITOR_100PC ? "100%" : EDITOR_WIDTH}
           viewRowCount={GRID_VIEW_ROWS}
           onCellDataChanged={(editor, row, cell, data) => {
