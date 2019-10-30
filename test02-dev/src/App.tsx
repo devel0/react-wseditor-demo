@@ -277,6 +277,7 @@ const App: React.FC = () => {
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
           selectionModeMulti={SELECT_MODE_MULTI}
           debug={true}
+          cellContainerHoverStyle={(editor,viewCell) => { return { background: "rgba(0,6,0,0.05)" } }}
           // headerCellStyle={(props) => { return { textDecoration: "underline" } }}
           // cellContainerStyle={(editor, viewCell) => { return { lineHeight: "2em" } }}
           // gridCellFocusedStyle={(editor, viewCell) => { return { border: SELECT_MODE_ROWS ? 0 : "1px solid rgba(56,90,162,0.8)" } }}
