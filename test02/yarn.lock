@@ -8457,10 +8457,10 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-wseditor@^0.3.25-0:
-  version "0.3.25-0"
-  resolved "https://registry.yarnpkg.com/react-wseditor/-/react-wseditor-0.3.25-0.tgz#a654d4b3186da87d8789e66a35e2c0a54765cad7"
-  integrity sha512-5zgddrfr7u68hvvqvLWqs0VB+pxT+DGLOkuXmcVvrqFt0gwhGhhC+twZxpjY3+WkTlJaejNOeFVVvQjl9zy96g==
+react-wseditor@^0.3.26-0:
+  version "0.3.26-0"
+  resolved "https://registry.yarnpkg.com/react-wseditor/-/react-wseditor-0.3.26-0.tgz#9efcb80bed8d02da995081f73aee83d595487629"
+  integrity sha512-A4nN2K2hG+4KACk+wFqSRuev6/DoGj0J0yb3Uh4FaI2fPqSn/UOfXSl4xNEvgoS/hAMojtyL+8VclWjaOMgsfQ==
   dependencies:
     "@material-ui/core" "^4.5.1"
     "@material-ui/icons" "^4.5.1"
