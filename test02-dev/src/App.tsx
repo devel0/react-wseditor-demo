@@ -33,8 +33,7 @@ const App: React.FC = () => {
 
     // POPULATE DATA
     for (let i = 0; i < ROWS_COUNT; ++i) {
-      //q1.current.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: String.fromCharCode(65 + i % 24) + " " + i, col3: i, col4: true });
-      q1.current.push({ col1: "aaaaaaaaaaaaaaaaaaaaa", col2: "bbbbbbbbbbbbbbbbbbbbbb", col3: i, col4: true });
+      q1.current.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: String.fromCharCode(65 + i % 24) + " " + i, col3: i, col4: true });      
     }
     setRows(q1.current);
 
