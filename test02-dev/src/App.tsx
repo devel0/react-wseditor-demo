@@ -3,11 +3,8 @@ import './App.css';
 import { Grid, TextField, Button, Typography, FormControlLabel, Checkbox, makeStyles } from '@material-ui/core';
 import useDebounce from './debounce';
 import { CSSProperties } from '@material-ui/styles';
-
-import {
-  WSEditor, WSEditorCellEditor, SortDirection, WSEditorCellEditorText, WSEditorCellEditorNumber,
-  WSEditorCellEditorBoolean, WSEditorSelectMode, WSEditorColumn
-} from './react-wseditor/src';
+import { WSEditor, WSEditorColumn, WSEditorCellEditor, SortDirection, WSEditorCellEditorText, WSEditorCellEditorNumber,
+   WSEditorCellEditorBoolean, WSEditorSelectMode } from './react-wseditor/src';
 
 interface MyData {
   col1: string,
@@ -21,7 +18,7 @@ const App: React.FC = () => {
   const [EDITOR_WIDTH, SET_EDITOR_WIDTH] = useState(2000);
   const [EDITOR_100PC, SET_EDITOR_100PC] = useState(true);
   const [GRID_VIEW_ROWS, SET_GRID_VIEW_ROWS] = useState(5);
-  const [SELECT_MODE_ROWS, SET_SELECT_MODE_ROWS] = useState(true);
+  const [SELECT_MODE_ROWS, SET_SELECT_MODE_ROWS] = useState(false);
   const [SELECT_MODE_MULTI, SET_SELECT_MODE_MULTI] = useState(true);
   const [FILTER, SET_FILTER] = useState("");
   const [rows, setRows] = useState<MyData[]>([]);
@@ -36,7 +33,8 @@ const App: React.FC = () => {
 
     // POPULATE DATA
     for (let i = 0; i < ROWS_COUNT; ++i) {
-      q1.current.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: String.fromCharCode(65 + i % 24) + " " + i, col3: i, col4: true });
+      //q1.current.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: String.fromCharCode(65 + i % 24) + " " + i, col3: i, col4: true });
+      q1.current.push({ col1: "aaaaaaaaaaaaaaaaaaaaa", col2: "bbbbbbbbbbbbbbbbbbbbbb", col3: i, col4: true });
     }
     setRows(q1.current);
 
