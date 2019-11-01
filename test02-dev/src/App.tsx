@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { Grid, TextField, Button, Typography, FormControlLabel, Checkbox, makeStyles } from '@material-ui/core';
-import WSEditorColumn, { SortDirection } from './react-wseditor/src/WSEditorColumn';
-import WSEditorCellEditorText from './react-wseditor/src/WSEditorCellEditorText';
-import WSEditorCellEditorNumber from './react-wseditor/src/WSEditorCellEditorNumber';
-import WSEditorCellEditorBoolean from './react-wseditor/src/WSEditorCellEditorBoolean';
-import WSEditor from './react-wseditor/src/WSEditor';
-import { WSEditorSelectMode } from './react-wseditor/src/WSEditorSelection';
 import useDebounce from './debounce';
-import WSEditorCellEditor from './react-wseditor/src/WSEditorCellEditor';
 import { CSSProperties } from '@material-ui/styles';
+
+import {
+  WSEditor, WSEditorCellEditor, SortDirection, WSEditorCellEditorText, WSEditorCellEditorNumber,
+  WSEditorCellEditorBoolean, WSEditorSelectMode, WSEditorColumn
+} from './react-wseditor/src';
 
 interface MyData {
   col1: string,
@@ -48,7 +46,7 @@ const App: React.FC = () => {
       {
         header: "viewrowidx (custom cell editor)",
         field: undefined,
-        maxWidth: "10%",        
+        //maxWidth: "10%",        
         // custom cell editor inline        
         editor: (props, editor, viewCell) => new WSEditorCellEditor(props, editor, viewCell, (cellEditor) => {
           return <div>
@@ -59,7 +57,7 @@ const App: React.FC = () => {
       {
         header: "default cell",
         field: "col1",
-        maxWidth: "20%",
+        //maxWidth: "20%",
         sortDir: SortDirection.Descending,
         sortOrder: 0,
         // cellContainerStyle: { background: "yellow" },
@@ -70,7 +68,7 @@ const App: React.FC = () => {
       {
         header: "cell editor text",
         field: "col2",
-        maxWidth: "15%",
+        //maxWidth: "15%",
         sortDir: SortDirection.Descending,
         sortOrder: 1,
         sortFn: (a, b, dir) => {
@@ -93,19 +91,24 @@ const App: React.FC = () => {
       {
         header: "cell editor number",
         field: "col3",
-        maxWidth: "15%",
+        //maxWidth: "15%",
         editor: (props, editor, viewCell) => new WSEditorCellEditorNumber(props, editor, viewCell),
       },
       {
         header: "cell editor boolean",
         field: "col4",
-        maxWidth: "40%",
+        //maxWidth: "40%",
         cellControlStyle: (editor, viewCell) => { return { marginLeft: "1em" } as CSSProperties },
         // justify: "flex-start",
         editor: (props, editor, viewCell) => new WSEditorCellEditorBoolean(props, editor, viewCell, {
           label: <Typography>lbl for row idx= {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx}</Typography>,
           labelPlacement: "end",
         }),
+      },
+      {
+        header: "cell boolean (default editor)",
+        field: "col4",
+        defaultEditor: "boolean"
       },
     ];
     setCols(q2.current);
