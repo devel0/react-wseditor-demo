@@ -14,7 +14,7 @@ export default function MyComponent() {
     const [rows, setRows] = useState<MyData[]>([]);
     const [cols, setCols] = useState<WSEditorColumn<MyData>[]>([]);
 
-    const SIZE_TEST = 120000;
+    const SIZE_TEST = 10000;
 
     useEffect(() => {
         setCols([
