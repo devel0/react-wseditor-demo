@@ -38,6 +38,8 @@ export default function MyComponent() {
     }, []);
 
     return <WSEditor
+        debug={true}
+        viewRowCount={6}
         rows={rows} setRows={setRows}
         cols={cols} setCols={setCols} />
 }

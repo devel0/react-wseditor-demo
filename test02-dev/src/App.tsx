@@ -68,6 +68,7 @@ const App: React.FC = () => {
         //maxWidth: "15%",
         sortDir: SortDirection.Descending,
         sortOrder: 1,
+        justify: "flex-start",
         sortFn: (a, b, dir) => {
           const aStrNum = a.col2.replace(/[^\d+]/g, "");
           const bStrNum = b.col2.replace(/[^\d+]/g, "");
