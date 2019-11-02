@@ -20,6 +20,7 @@ const App: React.FC = () => {
   const [GRID_VIEW_ROWS, SET_GRID_VIEW_ROWS] = useState(5);
   const [SELECT_MODE_ROWS, SET_SELECT_MODE_ROWS] = useState(false);
   const [SELECT_MODE_MULTI, SET_SELECT_MODE_MULTI] = useState(true);
+  const [CHECKBOX_MATERIAL, SET_CHECKBOX_MATERIAL] = useState(true);
   const [FILTER, SET_FILTER] = useState("");
   const [rows, setRows] = useState<MyData[]>([]);
   const [filteredRows, setFilteredRows] = useState<MyData[]>([]);
@@ -99,18 +100,19 @@ const App: React.FC = () => {
         cellControlStyle: (editor, viewCell) => { return { marginLeft: "1em" } as CSSProperties },
         // justify: "flex-start",
         editor: (props, editor, viewCell) => new WSEditorCellEditorBoolean(props, editor, viewCell, {
-          label: <Typography>lbl for row idx= {viewCell.getCellCoord(editor.state.scrollOffset).rowIdx}</Typography>,
-          labelPlacement: "end",
+          label: "lbl for row idx=" + viewCell.getCellCoord(editor.state.scrollOffset).rowIdx,
+          labelPlacement: "start",
+          noMaterial: CHECKBOX_MATERIAL === false
         }),
       },
-      {
-        header: "cell boolean (default editor)",
-        field: "col4",
-        defaultEditor: "boolean"
-      },
+      // {
+      //   header: "cell boolean (default editor)",
+      //   field: "col4",
+      //   defaultEditor: "boolean"
+      // },
     ];
     setCols(q2.current);
-  }, [ROWS_COUNT]);
+  }, [ROWS_COUNT, CHECKBOX_MATERIAL]);
 
   const useStyles = makeStyles({
     smallTextField: {
@@ -215,6 +217,20 @@ const App: React.FC = () => {
                 />
               }
               label="Select mode multi"
+            />
+          </Grid>
+
+           {/* CHECKBOX MATERIAL */}
+           <Grid item={true} xs="auto" className={classes.maginLeft1}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={CHECKBOX_MATERIAL}
+                  onChange={(v) => SET_CHECKBOX_MATERIAL(v.target.checked)}
+                  value="checkedF"
+                />
+              }
+              label="Checkbox material"
             />
           </Grid>
         </Grid>
