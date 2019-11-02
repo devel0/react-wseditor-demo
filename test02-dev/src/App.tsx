@@ -3,8 +3,10 @@ import './App.css';
 import { Grid, TextField, Button, Typography, FormControlLabel, Checkbox, makeStyles } from '@material-ui/core';
 import useDebounce from './debounce';
 import { CSSProperties } from '@material-ui/styles';
-import { WSEditor, WSEditorColumn, WSEditorCellEditor, SortDirection, WSEditorCellEditorText, WSEditorCellEditorNumber,
-   WSEditorCellEditorBoolean, WSEditorSelectMode } from './react-wseditor/src';
+import {
+  WSEditor, WSEditorColumn, WSEditorCellEditor, SortDirection, WSEditorCellEditorText, WSEditorCellEditorNumber,
+  WSEditorCellEditorBoolean, WSEditorSelectMode
+} from './react-wseditor/src';
 
 interface MyData {
   col1: string,
@@ -34,7 +36,7 @@ const App: React.FC = () => {
 
     // POPULATE DATA
     for (let i = 0; i < ROWS_COUNT; ++i) {
-      q1.current.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: String.fromCharCode(65 + i % 24) + " " + i, col3: i, col4: true });      
+      q1.current.push({ col1: 'grp nr ' + Math.trunc(i / 10), col2: String.fromCharCode(65 + i % 24) + " " + i, col3: i, col4: true });
     }
     setRows(q1.current);
 
@@ -220,8 +222,8 @@ const App: React.FC = () => {
             />
           </Grid>
 
-           {/* CHECKBOX MATERIAL */}
-           <Grid item={true} xs="auto" className={classes.maginLeft1}>
+          {/* CHECKBOX MATERIAL */}
+          <Grid item={true} xs="auto" className={classes.maginLeft1}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -293,6 +295,8 @@ const App: React.FC = () => {
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
           selectionModeMulti={SELECT_MODE_MULTI}
           debug={true}
+          // frameStyle={() => { return { margin: "2em" } }}
+          // tableStyle={() => { return { background: "yellow" } }}
           cellContainerHoverStyle={(editor, viewCell) => { return { background: "rgba(0,6,0,0.05)" } }}
           // headerCellStyle={(props) => { return { textDecoration: "underline" } }}
           // cellContainerStyle={(editor, viewCell) => { return { lineHeight: "2em" } }}
