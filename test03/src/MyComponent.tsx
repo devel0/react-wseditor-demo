@@ -39,7 +39,7 @@ export default function MyComponent() {
 
     return <WSEditor
         debug={true}
-        viewRowCount={6}
+        viewRowCount={12}
         rows={rows} setRows={setRows}
         cols={cols} setCols={setCols} />
 }

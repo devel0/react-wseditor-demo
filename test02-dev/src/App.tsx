@@ -19,7 +19,7 @@ const App: React.FC = () => {
   const [ROWS_COUNT, SET_GRID_SIZE] = useState(1200);
   const [EDITOR_WIDTH, SET_EDITOR_WIDTH] = useState(2000);
   const [EDITOR_100PC, SET_EDITOR_100PC] = useState(true);
-  const [GRID_VIEW_ROWS, SET_GRID_VIEW_ROWS] = useState(5);
+  const [GRID_VIEW_ROWS, SET_GRID_VIEW_ROWS] = useState(6);
   const [SELECT_MODE_ROWS, SET_SELECT_MODE_ROWS] = useState(false);
   const [SELECT_MODE_MULTI, SET_SELECT_MODE_MULTI] = useState(true);
   const [CHECKBOX_MATERIAL, SET_CHECKBOX_MATERIAL] = useState(true);
@@ -295,6 +295,7 @@ const App: React.FC = () => {
           selectionMode={SELECT_MODE_ROWS ? WSEditorSelectMode.Row : WSEditorSelectMode.Cell}
           selectionModeMulti={SELECT_MODE_MULTI}
           debug={true}
+          // disableScrollLock={true}
           // frameStyle={() => { return { margin: "2em" } }}
           // tableStyle={() => { return { background: "yellow" } }}
           cellContainerHoverStyle={(editor, viewCell) => { return { background: "rgba(0,6,0,0.05)" } }}
@@ -304,16 +305,16 @@ const App: React.FC = () => {
           // selectionStyle={(editor, viewCell) => { return { color: "red"} }}
           width={EDITOR_100PC ? "100%" : EDITOR_WIDTH}
           viewRowCount={GRID_VIEW_ROWS}
-          onCellDataChanged={(editor, row, cell, data) => {
-            // const q = row.col1; // typed row
-            console.log("data changed on cell:" + cell + " data:" + data);
-          }}
-          onRowsAdded={(editor, rows) => {
-            console.log(rows.length + " rows added");
-          }}
-          onRowsDeleted={(editor, rows) => {
-            console.log(rows.length + " rows deleted");
-          }}
+        // onCellDataChanged={(editor, row, cell, data) => {
+        //   const q = row.col1; // typed row
+        //   console.log("data changed on cell:" + cell + " data:" + data);
+        // }}
+        // onRowsAdded={(editor, rows) => {
+        //   console.log(rows.length + " rows added");
+        // }}
+        // onRowsDeleted={(editor, rows) => {
+        //   console.log(rows.length + " rows deleted");
+        // }}
         />
       </Grid>
     </Grid>
